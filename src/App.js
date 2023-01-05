@@ -1,23 +1,40 @@
-import logo from './logo.svg';
+import { useEffect, useState } from "react";
 import './App.css';
 
 function App() {
+  const [data, getData] = useState([]);
+  const URL = "https://jsonplaceholder.typicode.com/posts";
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    fetch(URL)
+      .then((res) => res.json())
+
+      .then((response) => {
+        console.log(response);
+        getData(response);
+      });
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="apihead">
+      <h1> Displaying API data in Table </h1>
+      <tbody>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Descripation</th>
+        </tr>
+        {data.map((item, i) => (
+          <tr key={i}>
+            <td>{item.id}</td>
+            <td>{item.title}</td>
+            <td>{item.body}</td>
+          </tr>
+        ))}
+      </tbody>
     </div>
   );
 }
